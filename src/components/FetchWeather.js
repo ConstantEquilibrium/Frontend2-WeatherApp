@@ -9,7 +9,7 @@ export default class FetchWeather extends Component {
     }
 
     componentDidMount() {
-        fetch('http://api.openweathermap.org/data/2.5/forecast?q=Stockholm,SE&appid=<APPID>&units=metric')
+        fetch('http://api.openweathermap.org/data/2.5/forecast?q=Stockholm,SE&appid=b48000371c551d3dcb2d904c4befd61b&units=metric')
             .then(response => response.json())
             .then(json => this.setState({ data:json.list })
         )
