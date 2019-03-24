@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import './App.css';
 import FetchWeather from './components/FetchWeather';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar/Sidebar';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <Navbar />
-
+        <div className="Container">
+          <Sidebar />
           <FetchWeather />
-          
-        </header>
+        </div>
       </div>
     );
   }
