@@ -30,7 +30,10 @@ export default class FetchWeather extends Component {
         let WeatherMain = {
             'textAlign': 'center',
             'background': 'rgba(255,255,255,0.1',
-            'padding': '3rem'
+            'padding': '3rem',
+            'flexGrow': '2',
+            'margin': '0 5rem',
+            'maxWidth': '80%'
         }
 
         return (

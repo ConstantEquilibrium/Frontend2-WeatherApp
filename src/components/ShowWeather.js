@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ShowWeatherMain from './ShowWeather/ShowWeatherMain';
+import UpcomingWeather from './ShowWeather/UpcomingWeather';
 
 export default class ShowWeather extends Component {
     constructor(props) {
@@ -12,33 +13,10 @@ export default class ShowWeather extends Component {
     }
 
     render() {
-        let BlockWeather = {
-            'display': 'block'
-        }
-    
-        let InlineWeather = {
-            'display': 'inline-block',
-            'textAlign': 'center',
-            'padding': '0 0.5rem'
-        }
-
-        let weatherList = this.props.forecast.map((date) => {
-            let dateTime = new Date((date.dt * 1000)).getUTCHours();
-            if(dateTime < 10) {
-                dateTime = "0" + dateTime;
-            }
-            return(
-                <div style={InlineWeather} key={date.dt}>
-                    <span style={BlockWeather}>{dateTime}</span>
-                    {date.main.temp}
-                </div>
-            )
-        })
-
         return( 
             <div >
                 <ShowWeatherMain currentWeather={this.props.currentWeather} />
-                {/* {weatherList} */}
+                <UpcomingWeather forecast={this.props.forecast} />
             </div>
         )
     }

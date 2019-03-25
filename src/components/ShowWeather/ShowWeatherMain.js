@@ -1,5 +1,8 @@
 import React from 'react'
 import '../../css/weather-icons.min.css';
+import Moment from 'react-moment';
+import 'moment-timezone';
+import 'moment/locale/sv'
 
 // export default class ShowWeatherMain extends Component {
 const ShowWeatherMain = ({currentWeather}) => {
@@ -29,23 +32,25 @@ const ShowWeatherMain = ({currentWeather}) => {
         'margin': '0 5rem'
     }
 
-    let newDate = new Date();
-    let sunRiseTime = newDate.toUTCString(currentWeather.sunrise);
-
     let iconString = "wi wi-owm-" + currentWeather.icon;
 
     return (
-        <div style={weatherMainStyle}>
+        // <div style={weatherMainStyle}>
+        <React.Fragment>
             <h3>{currentWeather.name}</h3>
             <div>
                 <h1 style={inlineBlock}>{currentWeather.temp} °C</h1>
                 <i style={weatherIcon} className={iconString}></i>
             </div>
             <p style={tempSpanStyle}><span>{currentWeather.temp_max} °C</span><span style={divider}>|</span><span>{currentWeather.temp_min} °C</span></p>
-            <div>
-                <p><i className="wi-sunrise"></i> {sunRiseTime}</p>
+            <div style={inlineBlock}>
+                <i className="wi wi-sunrise"></i> <Moment unix tz="Europe/Stockholm" format="LT">{currentWeather.sunrise}</Moment>
             </div>
-        </div>
+            <div style={inlineBlock}>
+                <i className="wi wi-sunset"></i> <Moment unix tz="Europe/Stockholm" format="LT">{currentWeather.sunset}</Moment>
+            </div>
+        {/* </div> */}
+        </React.Fragment>
     )
 }
 

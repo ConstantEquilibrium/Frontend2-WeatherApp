@@ -10,8 +10,8 @@ const SidebarCities = ({cities}) => {
         'background': 'rgba(255,255,255,0.1',
         'margin': '1rem 0',
         'verticaAlign': 'middle',
-        'padding': '0.7rem 1.5rem',
-        'minWidth': '150px'
+        'padding': '1rem 1.8rem',
+        'minWidth': '200px'
     }
 
     const SidebarItemContent = {
