@@ -23,7 +23,7 @@ const ShowWeatherMain = ({currentWeather}) => {
 
     let weatherIcon = {
         'height': '100%',
-        'font-size': '1.3rem',
+        'fontSize': '1.3rem',
         'marginLeft':'0.5rem'
     }
 
