@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Hamburger from '../img/icon_hamburger_1x.png';
 
 const Navbar = () =>  {
@@ -27,7 +27,7 @@ const Navbar = () =>  {
     return (
       <div style={navStyle} className="nav">
         <div style={navChildStyle} className="nav-left">
-            <img style={imgStyle} src={Hamburger} />
+            <img style={imgStyle} src={Hamburger} alt="hamburger" />
         </div>
         <div style={navChildStyle} className="nav-right">
             <p style={navChildElementStyle}>Share</p>

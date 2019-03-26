@@ -27,11 +27,6 @@ const ShowWeatherMain = ({currentWeather}) => {
         'marginLeft':'0.5rem'
     }
 
-    let weatherMainStyle = {
-        'flex': '2',
-        'margin': '0 5rem'
-    }
-
     let iconString = "wi wi-owm-" + currentWeather.icon;
 
     return (

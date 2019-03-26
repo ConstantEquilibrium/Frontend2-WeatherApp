@@ -34,7 +34,7 @@ const SidebarCities = ({cities}) => {
         return(
             <div key={city.id} style={SidebarItem}>
                 <h3 style={SidebarItemContent}>{city.name}</h3>
-                <img style={SidebarItemContent} style={favoriteBtnStyle} src={favoriteBtn} />
+                <img style={SidebarItemContent} style={favoriteBtnStyle} src={favoriteBtn} alt="img" />
             </div>
         )
     })

@@ -4,10 +4,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import '../../css/weather-icons.min.css';
 
 export default class UpcomingWeather extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         let BlockWeather = {
             'display': 'block'
