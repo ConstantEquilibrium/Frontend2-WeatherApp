@@ -3,6 +3,7 @@ import DisplayWeather  from './DisplayWeather'
 import SearchForm from './SearchForm'
 import Sidebar from '../Sidebar/Sidebar'
 import ShowWeatherMain from '../ShowWeather/ShowWeatherMain'
+import UpcomingWeather from './UpcomingWeather'
 
 export default class Weather extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class Weather extends Component {
     this.state = { 
       // forecast: [], 
       currentWeather: { name: null, temp: null, wind: null, temp_min: null, temp_max: null, icon: null, sunrise: null, sunset: null },
+      forecast: [],
       favoriteCities: [ {id: 1, name: "Stockholm", favorite: true}, {id:2, name: "New York", favorite: false}, {id:3, name: "Dubai", favorite: false} ]
     }     
   }
@@ -20,7 +22,13 @@ export default class Weather extends Component {
     const city = e.target.city.value; 
     const country = e.target.country.value;
 
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
+    let url;
+
+    if(country == "") {
+      url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
+    } else {
+      url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
+    }
 
     fetch(url)
         .then(response => response.json())
@@ -41,9 +49,9 @@ export default class Weather extends Component {
     const city = e.target.innerText;
     // const country = e.target.country.value;
 
-    const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
+    const currentWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
 
-    fetch(url)
+    fetch(currentWeatherUrl)
         .then(response => response.json())
         .then(json => this.setState({ currentWeather: {
             name: json.name, 
@@ -55,6 +63,10 @@ export default class Weather extends Component {
             sunrise: json.sys.sunrise,
             sunset: json.sys.sunset
         }}))
+
+        fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
+            .then(response => response.json())
+            .then(json => this.setState({ forecast:json.list }))
   }
 
   handleFavorite = (e) => {
@@ -64,13 +76,10 @@ export default class Weather extends Component {
       ...prevState.favoriteCities,
       [this.state.favoriteCities[e-1].favorite]: false
     }))
-
-    console.log(this.state.favoriteCities[e-1].favorite);
   }
 
   setLocation = (location) => {
       this.setState({location: { long: location.coords.longitude, lat: location.coords.latitude }});
-      console.log(location)
   }
 
   error = () => {
@@ -78,7 +87,6 @@ export default class Weather extends Component {
   }
 
   getLocation() {
-      console.log("setting location")
       if(navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(this.fetchWeather, null, { enableHighAccuracy: false });
       }
@@ -91,9 +99,7 @@ export default class Weather extends Component {
     
   }
 
-  fetchWeather = (location) => {
-    console.log("Fetching");
-    
+  fetchWeather = (location) => {    
     const lat = location.coords.latitude;
     const long = location.coords.longitude;
     const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
@@ -110,20 +116,40 @@ export default class Weather extends Component {
         sunrise: json.sys.sunrise,
         sunset: json.sys.sunset
     }}))
+
+    fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
+            .then(response => response.json())
+            .then(json => this.setState({ forecast:json.list }))
   }
 
   render() {
+    let container = {
+      display: 'flex',
+      flexDirection: 'row'
+    }
+
+    let weatherMainStyle = {
+      background: 'rgba(255,255,255,0.2)',
+      padding: '2rem',
+      margin: '2rem',
+      maxWidth: '60vw',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center'
+    }
+
     return (
-      <React.Fragment>
+      <div style={container}>
         <div>
           <SearchForm handleSubmit={this.handleSubmit} />
           <Sidebar handleFavorite={this.handleFavorite} handleOnClick={this.handleOnClick} cities={this.state.favoriteCities} />
         </div>
-        <div>
-        <ShowWeatherMain currentWeather={this.state.currentWeather} />
+        <div style={weatherMainStyle}>
+          <ShowWeatherMain currentWeather={this.state.currentWeather} />
+          <UpcomingWeather forecast={this.state.forecast} />
         {/* <DisplayWeather currentWeather={this.state.currentWeather} /> */}
         </div>
-      </React.Fragment>
+      </div>
     )
   }
 }

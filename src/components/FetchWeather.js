@@ -50,7 +50,6 @@ export default class FetchWeather extends Component {
 
     setLocation = (location) => {
         this.setState({location: { long: location.coords.longitude, lat: location.coords.latitude }});
-        console.log(location)
     }
 
     error = () => {
@@ -58,11 +57,9 @@ export default class FetchWeather extends Component {
     }
 
     getLocation() {
-        console.log("setting location")
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.setLocation, null, { enableHighAccuracy: false });
         }
-        console.log("location set")
         return;
     }
 

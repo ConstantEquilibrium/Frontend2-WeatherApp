@@ -3,6 +3,7 @@ import '../../css/weather-icons.min.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import 'moment/locale/sv'
+// import UpcomingWeather from './UpcomingWeather';
 
 // export default class ShowWeatherMain extends Component {
 const ShowWeatherMain = ({currentWeather}) => {
@@ -31,8 +32,9 @@ const ShowWeatherMain = ({currentWeather}) => {
     
     return (
         // <div style={weatherMainStyle}>
-        <React.Fragment>
-            <h3>{currentWeather.name}</h3>
+        <div style={{marginBottom: '2rem', textAlign: 'right'}}>
+            <h3 style={{marginBottom: '1rem', display: 'inline-block'}}>{currentWeather.name}</h3>
+            <h5 style={{display: 'inline-block', marginLeft: '0.5rem', cursor: 'pointer'}}>Favorite</h5>
             <div>
                 <h1 style={inlineBlock}>{currentWeather.temp} °C</h1>
                 <i style={weatherIcon} className={iconString}></i>
@@ -45,7 +47,7 @@ const ShowWeatherMain = ({currentWeather}) => {
                 <i className="wi wi-sunset"></i> <Moment unix tz="Europe/Stockholm" format="LT">{currentWeather.sunset}</Moment>
             </div>
         {/* </div> */}
-        </React.Fragment>
+        </div>
     )
 }
 
