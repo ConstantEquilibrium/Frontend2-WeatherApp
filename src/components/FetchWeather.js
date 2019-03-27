@@ -67,8 +67,6 @@ export default class FetchWeather extends Component {
     }
 
     getWeather() {
-        this.getLocation();
-
         console.log(`fetching weather with coordinates ${this.state.location.lat} & ${this.state.location.long}`);
         fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${this.state.location.lat}&lon=${this.state.location.long}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
             .then(response => response.json())

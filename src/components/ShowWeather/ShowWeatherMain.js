@@ -28,7 +28,7 @@ const ShowWeatherMain = ({currentWeather}) => {
     }
 
     let iconString = "wi wi-owm-" + currentWeather.icon;
-
+    
     return (
         // <div style={weatherMainStyle}>
         <React.Fragment>
