@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import DisplayWeather  from './DisplayWeather'
 import SearchForm from './SearchForm'
 import Sidebar from '../Sidebar/Sidebar'
-import ShowWeatherMain from '../ShowWeather/ShowWeatherMain'
 import UpcomingWeather from './UpcomingWeather'
 
 export default class Weather extends Component {
@@ -111,16 +110,18 @@ export default class Weather extends Component {
       console.log("City exists!")
     } else {
       this.setState(prevState => ({ favoriteCities: [...prevState.favoriteCities, {id:Math.random(), name: city, favorite: true}]}))
-      this.saveToLocalStore();
+      // this.saveToLocalStore(city);
     }
+
+    this.saveToLocalStore();
   }
 
   saveToLocalStore() {
-    console.log("Saving to local storage")
-    console.log(this.state.favoriteCities)
+    // console.log("Saving to local storage")
     let stateString = JSON.stringify(this.state.favoriteCities);
     console.log(stateString)
     localStorage.setItem("cities", stateString);
+    console.log("Localstorage set")
   }
 
   componentDidMount() {
@@ -173,20 +174,17 @@ export default class Weather extends Component {
       justifyContent: 'center'
     }
 
+    console.log("render");
+
     return (
-      <div style={container}>
+      <div style={{display:'flex', flexDirection:'row'}}>
         <div>
           <SearchForm handleSubmit={this.handleSubmit} />
           <Sidebar handleFavorite={this.handleFavorite} handleOnClick={this.handleOnClick} cities={this.state.favoriteCities} />
         </div>
         <div style={weatherMainStyle}>
-<<<<<<< HEAD
-          <DisplayWeather currentWeather={this.state.currentWeather} />
-=======
-          <ShowWeatherMain currentWeather={this.state.currentWeather} handleAddFavorite={this.handleAddFavorite} />
->>>>>>> 2f18e9be879e482d931c52d731e25e8ea1e2ff75
+          <DisplayWeather currentWeather={this.state.currentWeather} handleAddFavorite={this.handleAddFavorite} />
           <UpcomingWeather forecast={this.state.forecast} />
-        {/* <DisplayWeather currentWeather={this.state.currentWeather} /> */}
         </div>
       </div>
     )
