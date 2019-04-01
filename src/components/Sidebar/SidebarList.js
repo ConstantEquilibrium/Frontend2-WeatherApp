@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Icon_StarSolid from '../../img/icon_star_solid_1x.png';
 import Icon_StarRegular from '../../img/icon_star_regular_1x.png';
+import PerfectScrollbar from 'react-perfect-scrollbar'
+import 'react-perfect-scrollbar/dist/css/styles.css';
 
 export default class SidebarList extends Component {
     constructor(props) {
@@ -65,9 +67,9 @@ export default class SidebarList extends Component {
     })
 
     return (
-      <div>
-        {CityList}
-      </div>
+        <PerfectScrollbar>
+            {CityList}
+        </PerfectScrollbar>
     )
   }
 }
