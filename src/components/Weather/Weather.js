@@ -22,13 +22,17 @@ export default class Weather extends Component {
     const city = e.target.city.value; 
     const country = e.target.country.value;
 
-    let url;
-
+    let type;
+    
     if(country == "") {
-      url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
+      type = `${city}`
     } else {
-      url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`
+      url = `${city},${country}`
     }
+
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${type}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`;
+
+    console.log("fetching")
 
     fetch(url)
         .then(response => response.json())
@@ -42,6 +46,10 @@ export default class Weather extends Component {
             sunrise: json.sys.sunrise,
             sunset: json.sys.sunset
         }}))
+
+    fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${type}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
+        .then(response => response.json())
+        .then(json => this.setState({ forecast:json.list }))
   }
 
   handleOnClick = (e) => {
@@ -145,7 +153,7 @@ export default class Weather extends Component {
           <Sidebar handleFavorite={this.handleFavorite} handleOnClick={this.handleOnClick} cities={this.state.favoriteCities} />
         </div>
         <div style={weatherMainStyle}>
-          <ShowWeatherMain currentWeather={this.state.currentWeather} />
+          <DisplayWeather currentWeather={this.state.currentWeather} />
           <UpcomingWeather forecast={this.state.forecast} />
         {/* <DisplayWeather currentWeather={this.state.currentWeather} /> */}
         </div>

@@ -50,6 +50,7 @@ export default class FetchWeather extends Component {
 
     setLocation = (location) => {
         this.setState({location: { long: location.coords.longitude, lat: location.coords.latitude }});
+        console.log(location)
     }
 
     error = () => {
@@ -57,13 +58,17 @@ export default class FetchWeather extends Component {
     }
 
     getLocation() {
+        console.log("setting location")
         if(navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(this.setLocation, null, { enableHighAccuracy: false });
         }
+        console.log("location set")
         return;
     }
 
     getWeather() {
+        this.getLocation();
+
         console.log(`fetching weather with coordinates ${this.state.location.lat} & ${this.state.location.long}`);
         fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${this.state.location.lat}&lon=${this.state.location.long}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
             .then(response => response.json())
@@ -82,8 +87,6 @@ export default class FetchWeather extends Component {
     }
 
     render() {
-        this.getWeather();
-
         let WeatherMain = {
             'textAlign': 'center',
             'background': 'rgba(255,255,255,0.1',
