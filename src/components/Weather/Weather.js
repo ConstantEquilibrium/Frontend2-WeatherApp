@@ -11,7 +11,7 @@ export default class Weather extends Component {
   
     this.state = { 
       // forecast: [], 
-      currentWeather: { name: null, temp: null, wind: null, temp_min: null, temp_max: null, icon: null, sunrise: null, sunset: null },
+      currentWeather: { name: "Null", temp: 0, wind: 0, temp_min: 0, temp_max: 0, icon: null, sunrise: "00:00", sunset: "00:00" },
       forecast: [],
       favoriteCities: [ {id: 1, name: "Stockholm", favorite: true}, {id:2, name: "New York", favorite: false}, {id:3, name: "Dubai", favorite: false} ]
     }     
@@ -94,9 +94,36 @@ export default class Weather extends Component {
       return;
   }
 
+  handleAddFavorite = (city) => {
+    let matching = this.state.favoriteCities.filter(function(e) {
+      return (e.name === city);
+    })
+
+    if(matching.length > 0) {
+      console.log("City exists!")
+    } else {
+      this.setState(prevState => ({ favoriteCities: [...prevState.favoriteCities, {id:Math.random(), name: city, favorite: true}]}))
+      this.saveToLocalStore();
+    }
+  }
+
+  saveToLocalStore() {
+    console.log("Saving to local storage")
+    console.log(this.state.favoriteCities)
+    let stateString = JSON.stringify(this.state.favoriteCities);
+    console.log(stateString)
+    localStorage.setItem("cities", stateString);
+  }
+
   componentDidMount() {
     this.getLocation();
-    
+
+    if(localStorage.getItem("cities") === null) {
+      localStorage.setItem("cities", JSON.stringify(this.state.favoriteCities));
+    } else {
+      console.log("Setting state from localstorage")
+      this.setState({favoriteCities: JSON.parse(localStorage.getItem("cities"))})
+    }
   }
 
   fetchWeather = (location) => {    
@@ -145,7 +172,7 @@ export default class Weather extends Component {
           <Sidebar handleFavorite={this.handleFavorite} handleOnClick={this.handleOnClick} cities={this.state.favoriteCities} />
         </div>
         <div style={weatherMainStyle}>
-          <ShowWeatherMain currentWeather={this.state.currentWeather} />
+          <ShowWeatherMain currentWeather={this.state.currentWeather} handleAddFavorite={this.handleAddFavorite} />
           <UpcomingWeather forecast={this.state.forecast} />
         {/* <DisplayWeather currentWeather={this.state.currentWeather} /> */}
         </div>
