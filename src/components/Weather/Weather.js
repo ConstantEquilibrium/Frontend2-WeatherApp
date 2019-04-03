@@ -109,19 +109,16 @@ export default class Weather extends Component {
     if(matching.length > 0) {
       console.log("City exists!")
     } else {
-      this.setState(prevState => ({ favoriteCities: [...prevState.favoriteCities, {id:Math.random(), name: city, favorite: true}]}))
-      // this.saveToLocalStore(city);
+      let newCity = {id:Math.random(), name: city, favorite: true};
+      this.setState(prevState => ({ favoriteCities: [...prevState.favoriteCities, newCity]}))
+      this.saveToLocalStore(newCity)
     }
-
-    this.saveToLocalStore();
   }
 
-  saveToLocalStore() {
-    // console.log("Saving to local storage")
-    let stateString = JSON.stringify(this.state.favoriteCities);
-    console.log(stateString)
-    localStorage.setItem("cities", stateString);
-    console.log("Localstorage set")
+  saveToLocalStore(newCity) {
+    let local = JSON.parse(localStorage.getItem("cities"));
+    local.push(newCity)
+    localStorage.setItem("cities", JSON.stringify(local));
   }
 
   componentDidMount() {
@@ -150,7 +147,8 @@ export default class Weather extends Component {
         temp_max: Math.ceil(json.main.temp_max), 
         icon: json.weather[0].id,
         sunrise: json.sys.sunrise,
-        sunset: json.sys.sunset
+        sunset: json.sys.sunset,
+
     }}))
 
     fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
@@ -167,14 +165,12 @@ export default class Weather extends Component {
     let weatherMainStyle = {
       background: 'rgba(255,255,255,0.2)',
       padding: '2rem',
-      margin: '2rem',
+      margin: '0 2rem 2rem 2rem',
       maxWidth: '60vw',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center'
     }
-
-    console.log("render");
 
     return (
       <div style={{display:'flex', flexDirection:'row'}}>
@@ -182,9 +178,11 @@ export default class Weather extends Component {
           <SearchForm handleSubmit={this.handleSubmit} />
           <Sidebar handleFavorite={this.handleFavorite} handleOnClick={this.handleOnClick} cities={this.state.favoriteCities} />
         </div>
-        <div style={weatherMainStyle}>
-          <DisplayWeather currentWeather={this.state.currentWeather} handleAddFavorite={this.handleAddFavorite} />
-          <UpcomingWeather forecast={this.state.forecast} />
+        <div>
+          <div style={weatherMainStyle}>
+            <DisplayWeather currentWeather={this.state.currentWeather} handleAddFavorite={this.handleAddFavorite} />
+            <UpcomingWeather forecast={this.state.forecast} />
+          </div>
         </div>
       </div>
     )

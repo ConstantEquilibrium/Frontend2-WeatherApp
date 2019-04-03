@@ -19,21 +19,27 @@ const UpcomingWeather = ({forecast}) => {
         'fontSize': '1.3rem',
     }
 
-    let weatherList = forecast.map((date) => {
-        let iconString = "wi wi-owm-" + date.weather[0].id;
-        let dateTime = new Date((date.dt * 1000)).getUTCHours();
+    let weatherList;
 
-        if(dateTime < 10) {
-            dateTime = "0" + dateTime;
-        }
-        return(
-            <div style={InlineWeather} key={date.dt}>
-                <span style={{display: 'block', marginBottom: '0.5rem'}}>{dateTime}:00</span>
-                <span style={{display: 'block', marginBottom: '0.1rem'}}>{Math.round(date.main.temp)}°</span>
-                <i style={weatherIcon} className={iconString}></i>
-            </div>
-        )
-    })
+    if(forecast != null) {
+        weatherList = forecast.map((date) => {
+            let iconString = "wi wi-owm-" + date.weather[0].id;
+            let dateTime = new Date((date.dt * 1000)).getUTCHours();
+
+            if(dateTime < 10) {
+                dateTime = "0" + dateTime;
+            }
+            return(
+                <div style={InlineWeather} key={date.dt}>
+                    <span style={{display: 'block', marginBottom: '0.5rem'}}>{dateTime}:00</span>
+                    <span style={{display: 'block', marginBottom: '0.1rem'}}>{Math.round(date.main.temp)}°</span>
+                    <i style={weatherIcon} className={iconString}></i>
+                </div>
+            )
+        })
+    } else {
+        weatherList = []
+    }
 
   return (
     <PerfectScrollbar style={{'overflow':'hidden', 'whiteSpace': 'nowrap', 'minHeight': '80px'}}>
