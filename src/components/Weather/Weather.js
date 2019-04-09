@@ -3,6 +3,7 @@ import DisplayWeather  from './DisplayWeather'
 import SearchForm from './SearchForm'
 import Sidebar from '../Sidebar/Sidebar'
 import UpcomingWeather from './UpcomingWeather'
+import Forecast from './Forecast'
 
 export default class Weather extends Component {
   constructor(props) {
@@ -11,8 +12,9 @@ export default class Weather extends Component {
     this.state = { 
       // forecast: [], 
       currentWeather: { name: "Null", temp: 0, wind: 0, temp_min: 0, temp_max: 0, icon: null, sunrise: "00:00", sunset: "00:00" },
-      forecast: [],
-      favoriteCities: [ {id: 1, name: "Stockholm", favorite: true}, {id:2, name: "New York", favorite: false}, {id:3, name: "Dubai", favorite: false} ]
+      upcoming: [],
+      favoriteCities: [ {id: 1, name: "Stockholm", favorite: true}, {id:2, name: "New York", favorite: false}, {id:3, name: "Dubai", favorite: false} ],
+      forecast: null
     }     
   }
   
@@ -26,7 +28,7 @@ export default class Weather extends Component {
     if(country == "") {
       type = `${city}`
     } else {
-      url = `${city},${country}`
+      type = `${city},${country}`
     }
 
     let url = `http://api.openweathermap.org/data/2.5/weather?q=${type}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`;
@@ -48,7 +50,13 @@ export default class Weather extends Component {
 
     fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${type}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
         .then(response => response.json())
-        .then(json => this.setState({ forecast:json.list }))
+        .then(json => this.setState({ upcoming:json.list }))
+
+    fetch(`http://api.apixu.com/v1/forecast.json?key=e6f25c0113b34dc5bdc73125190904&q=${type}&days=5`)
+        .then(response => response.json())
+        .then(json => this.setState({ forecast: json.forecast.forecastday}))
+
+    console.log(this.state.upcoming)
   }
 
   handleOnClick = (e) => {
@@ -73,7 +81,12 @@ export default class Weather extends Component {
 
         fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
             .then(response => response.json())
-            .then(json => this.setState({ forecast:json.list }))
+            .then(json => this.setState({ upcoming:json.list }))
+            .then(console.log(this.state.upcoming))
+
+        fetch(`http://api.apixu.com/v1/forecast.json?key=e6f25c0113b34dc5bdc73125190904&q=${city}&days=5`)
+            .then(response => response.json())
+            .then(json => this.setState({ forecast: json.forecast.forecastday}))
   }
 
   handleFavorite = (e) => {
@@ -153,7 +166,7 @@ export default class Weather extends Component {
 
     fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=b48000371c551d3dcb2d904c4befd61b&units=metric`)
             .then(response => response.json())
-            .then(json => this.setState({ forecast:json.list }))
+            .then(json => this.setState({ upcoming:json.list }))
   }
 
   render() {
@@ -181,7 +194,8 @@ export default class Weather extends Component {
         <div>
           <div style={weatherMainStyle}>
             <DisplayWeather currentWeather={this.state.currentWeather} handleAddFavorite={this.handleAddFavorite} />
-            <UpcomingWeather forecast={this.state.forecast} />
+            <UpcomingWeather upcoming={this.state.upcoming} />
+            {this.state.forecast !== null ? <Forecast forecast={this.state.forecast} /> : null}
           </div>
         </div>
       </div>

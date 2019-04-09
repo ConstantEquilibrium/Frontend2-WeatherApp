@@ -3,7 +3,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import '../../css/weather-icons.min.css';
 
-const UpcomingWeather = ({forecast}) => {
+const UpcomingWeather = ({upcoming}) => {
     let BlockWeather = {
         'display': 'block'
     }
@@ -21,8 +21,8 @@ const UpcomingWeather = ({forecast}) => {
 
     let weatherList;
 
-    if(forecast != null) {
-        weatherList = forecast.map((date) => {
+    if(upcoming != null) {
+        weatherList = upcoming.map((date) => {
             let iconString = "wi wi-owm-" + date.weather[0].id;
             let dateTime = new Date((date.dt * 1000)).getUTCHours();
 

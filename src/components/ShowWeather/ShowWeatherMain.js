@@ -34,7 +34,7 @@ const ShowWeatherMain = ({currentWeather, handleAddFavorite}) => {
         // <div style={weatherMainStyle}>
         <div style={{marginBottom: '2rem', textAlign: 'right'}}>
             <h3 style={{marginBottom: '1rem', display: 'inline-block'}}>{currentWeather.name}</h3>
-            <h5 onClick = {() => { handleAddFavorite(currentWeather.name) }} style={{display: 'inline-block', marginLeft: '0.5rem', cursor: 'pointer'}}>Favorite</h5>
+            <h5 onClick = {() => { handleAddFavorite() }} style={{display: 'inline-block', marginLeft: '0.5rem', cursor: 'pointer'}}>Favorite</h5>
             <div>
                 <h1 style={inlineBlock}>{currentWeather.temp} °C</h1>
                 <i style={weatherIcon} className={iconString}></i>
